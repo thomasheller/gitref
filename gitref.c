@@ -33,7 +33,7 @@ void print_ref(char* ref) {
     fputs(suffix, stdout);
 }
 
-int try_git_dir(char* dir) {
+bool try_git_dir(char* dir) {
   char head_file[PATH_MAX];
 
   snprintf(head_file, sizeof(head_file), "%s%s", dir, "/.git/HEAD");
