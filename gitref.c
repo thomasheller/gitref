@@ -1,5 +1,6 @@
 #include <libgen.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,7 +41,7 @@ int try_git_dir(char* dir) {
   FILE* f = fopen(head_file, "r");
 
   if(f == NULL)
-    return 1; // failed to open HEAD file
+    return false; // failed to open HEAD file
 
   char ref[256];
 
@@ -64,7 +65,7 @@ int try_git_dir(char* dir) {
     print_ref(last_slash+1);
   }
 
-  return 0; // success
+  return true; // success
 }
 
 int main(int argc, char **argv) {
@@ -78,7 +79,7 @@ int main(int argc, char **argv) {
   if(getcwd(dir, sizeof(dir)) == NULL)
     fail("could not get current working directory");
 
-  while(try_git_dir(dir)) {
+  while(!try_git_dir(dir)) {
     if(strlen(dir) == 1) // root of file system already reached
       return 1;
     dirname(dir); // go up one level
